@@ -1,0 +1,43 @@
+{
+  "manifest_version": 2,
+  "version": "0.1.0",
+  "name": "Advance Bookmark Search",
+  "description": "A fast offline search engine for bookmarks that supports searching operators",
+  "offline_enabled": true,
+  "permissions": [
+    "storage",
+    "bookmarks"
+  ],
+   "offline_enabled": true,
+  "background": {
+    "persistent": false,
+    "scripts": [
+      "xapian.js",
+      "background.js",
+      "xapian/xapian.js"
+    ]
+  },
+  "icons": {
+    "16": "data/icons/16.png",
+    "19": "data/icons/19.png",
+    "32": "data/icons/32.png",
+    "38": "data/icons/38.png",
+    "64": "data/icons/64.png",
+    "128": "data/icons/128.png",
+    "256": "data/icons/256.png"
+  },
+  "browser_action":{
+    "default_icon": {
+      "16": "data/icons/16.png",
+      "19": "data/icons/19.png",
+      "32": "data/icons/32.png",
+      "38": "data/icons/38.png",
+      "64": "data/icons/64.png"
+    }
+  },
+  "commands": {
+    "open": {
+      "description": "Open the bookmark search in a standalone window"
+    }
+  }
+}

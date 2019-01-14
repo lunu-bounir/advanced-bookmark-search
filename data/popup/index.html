@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <header id="search">
+    <form data-value="">
+      <input type="search" autofocus placeholder="search query" autocomplete="off" id="searchbox">
+      <input type="submit" value="">
+    </form>
+  </header>
+  <section id="content">
+    <template id="entry"><tr class="entry">
+      <td>#</td>
+      <td data-id="title"></td>
+      <td data-id="url"></td>
+      <td data-id="date"></td>
+      <td data-id="percent"></td>
+    </tr></template>
+    <table width=100%>
+      <colgroup>
+        <col width="32px">
+        <col width="40%">
+        <col width="60%">
+        <col width="100px">
+        <col width="50px">
+      </colgroup>
+      <thead>
+        <tr>
+          <td>#</td>
+          <th>Title</th>
+          <th>URL</th>
+          <th>Date</th>
+          <th>%</th>
+        </tr>
+      </thead>
+      <tbody data-msg=""></tbody>
+    </table>
+  </section>
+  <footer>&nbsp;<span id="footer"></span></footer>
+
+  <script src="manager.js"></script>
+  <script src="index.js"></script>
+</body>
+</html>

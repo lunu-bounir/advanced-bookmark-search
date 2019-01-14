@@ -1,0 +1,1 @@
+../../../clipboard-manager/data/manager/manager.js
