@@ -78,9 +78,6 @@ body[data-mode=window] {
 #content tr {
   line-height: 24px;
 }
-#content tr {
-  line-height: 24px;
-}
 #content tr.selected {
   background-color: #88d0d7 !important;
 }

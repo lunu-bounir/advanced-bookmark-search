@@ -1,14 +1,14 @@
 {
   "manifest_version": 2,
-  "version": "0.1.0",
-  "name": "Advance Bookmark Search",
+  "version": "0.1.1",
+  "name": "Advanced Bookmark Search",
   "description": "A fast offline search engine for bookmarks that supports searching operators",
   "offline_enabled": true,
   "permissions": [
     "storage",
     "bookmarks"
   ],
-   "offline_enabled": true,
+  "homepage_url": "https://add0n.com/bookmark-search.html",
   "background": {
     "persistent": false,
     "scripts": [

@@ -28,6 +28,43 @@ bookmarks.date = (timestamp, separator = '') => {
   return [year, (month.length < 2 ? '0' : '') + month, (day.length < 2 ? '0' : '') + day].join(separator);
 };
 
+bookmarks.language = query => new Promise(resolve => chrome.i18n.detectLanguage(query, obj => {
+  var convert = code => {
+    code = code.split('-')[0];
+    return ({
+      'ar': 'arabic',
+      'fa': 'arabic',
+      'hy': 'armenian',
+      'eu': 'basque',
+      'ca': 'catalan',
+      'da': 'danish',
+      'nl': 'dutch',
+      'en': 'english',
+      'fi': 'finnish',
+      'fr': 'french',
+      'de': 'german',
+      'hu': 'hungarian',
+      'id': 'indonesian',
+      'ga': 'irish',
+      'it': 'italian',
+      'lt': 'lithuanian',
+      'ne': 'nepali',
+      'no': 'norwegian',
+      'nn': 'norwegian',
+      'nb': 'norwegian',
+      'pt': 'portuguese',
+      'ro': 'romanian',
+      'ru': 'russian',
+      'es': 'spanish',
+      'sv': 'swedish',
+      'ta': 'tamil',
+      'tr': 'turkish'
+    })[code] || 'english';
+  };
+  const code = obj && obj.languages.length ? obj.languages[0].language : 'en';
+  resolve(convert(code));
+}));
+
 bookmarks.add = node => {
   const index = Number(localStorage.getItem('counter') || '0');
   localStorage.setItem('counter', index + 1);
@@ -95,30 +132,49 @@ chrome.runtime.onMessage.addListener((request, sender) => {
 // commands
 var onCommand = async command => {
   if (command === 'open') {
-    if (ports.length) {
-      chrome.windows.update(ports[0].sender.tab.windowId, {
-        focused: true
-      });
-    }
-    else {
-      chrome.storage.local.get({
-        width: 750,
-        height: 550,
-        left: screen.availLeft + Math.round((screen.availWidth - 700) / 2),
-        top: screen.availTop + Math.round((screen.availHeight - 500) / 2)
-      }, prefs => {
-        chrome.windows.create({
-          url: chrome.extension.getURL('data/popup/index.html?mode=window'),
-          width: prefs.width,
-          height: prefs.height,
-          left: prefs.left,
-          top: prefs.top,
-          type: 'popup'
-        }, win => chrome.windows.update(win.id, {
+    chrome.tabs.query({
+      currentWindow: true,
+      active: true
+    }, tabs => {
+      if (ports.length) {
+        chrome.windows.update(ports[0].sender.tab.windowId, {
           focused: true
-        }));
-      });
-    }
+        });
+        if (tabs.length) {
+          ports[0].postMessage({
+            method: 'update',
+            windowId: tabs[0].windowId,
+            index: tabs[0].index,
+            tabId: tabs[0].id
+          });
+        }
+      }
+      else {
+        chrome.storage.local.get({
+          width: 750,
+          height: 550,
+          left: screen.availLeft + Math.round((screen.availWidth - 700) / 2),
+          top: screen.availTop + Math.round((screen.availHeight - 500) / 2)
+        }, prefs => {
+          let url = 'data/popup/index.html?mode=window';
+          if (tabs.length) {
+            url += '&windowId=' + tabs[0].windowId;
+            url += '&index=' + tabs[0].index;
+            url += '&tabId=' + tabs[0].id;
+          }
+          chrome.windows.create({
+            url: chrome.extension.getURL(url),
+            width: prefs.width,
+            height: prefs.height,
+            left: prefs.left,
+            top: prefs.top,
+            type: 'popup'
+          }, win => chrome.windows.update(win.id, {
+            focused: true
+          }));
+        });
+      }
+    });
   }
 };
 chrome.commands.onCommand.addListener(onCommand);
@@ -137,3 +193,29 @@ chrome.storage.onChanged.addListener(ps => {
 });
 chrome.runtime.onStartup.addListener(mode);
 chrome.runtime.onInstalled.addListener(mode);
+
+{
+  const {onInstalled, setUninstallURL, getManifest} = chrome.runtime;
+  const {name, version} = getManifest();
+  const page = getManifest().homepage_url;
+  onInstalled.addListener(({reason, previousVersion}) => {
+    chrome.storage.local.get({
+      'faqs': true,
+      'last-update': 0
+    }, prefs => {
+      if (reason === 'install' || (prefs.faqs && reason === 'update')) {
+        const doUpdate = (Date.now() - prefs['last-update']) / 1000 / 60 / 60 / 24 > 45;
+        if (doUpdate && previousVersion !== version) {
+          chrome.tabs.create({
+            url: page + '?version=' + version +
+              (previousVersion ? '&p=' + previousVersion : '') +
+              '&type=' + reason,
+            active: reason === 'install'
+          });
+          chrome.storage.local.set({'last-update': Date.now()});
+        }
+      }
+    });
+  });
+  setUninstallURL(page + '?rd=feedback&name=' + encodeURIComponent(name) + '&version=' + version);
+}
