@@ -4,7 +4,7 @@
 xapian.config.persistent = true,
 xapian.config.object.store = false;
 
-var ports = [];
+const ports = [];
 chrome.runtime.onConnect.addListener(p => {
   p.onDisconnect.addListener(() => {
     const index = ports.indexOf(p);
@@ -15,9 +15,10 @@ chrome.runtime.onConnect.addListener(p => {
   ports.push(p);
 });
 
-var bookmarks = {
+const bookmarks = {
   root: typeof InstallTrigger !== 'undefined' ? 'root________' : '0'
 };
+window.bookmarks = bookmarks;
 
 bookmarks.date = (timestamp, separator = '') => {
   const d = new Date(timestamp);
@@ -29,7 +30,7 @@ bookmarks.date = (timestamp, separator = '') => {
 };
 
 bookmarks.language = query => new Promise(resolve => chrome.i18n.detectLanguage(query, obj => {
-  var convert = code => {
+  const convert = code => {
     code = code.split('-')[0];
     return ({
       'ar': 'arabic',
@@ -130,7 +131,7 @@ chrome.runtime.onMessage.addListener((request, sender) => {
 });
 
 // commands
-var onCommand = async command => {
+const onCommand = async command => {
   if (command === 'open') {
     chrome.tabs.query({
       currentWindow: true,
@@ -180,7 +181,7 @@ var onCommand = async command => {
 chrome.commands.onCommand.addListener(onCommand);
 chrome.browserAction.onClicked.addListener(() => onCommand('open'));
 
-var mode = () => chrome.storage.local.get({
+const mode = () => chrome.storage.local.get({
   mode: 'popup'
 }, prefs => chrome.browserAction.setPopup({
   popup: prefs.mode === 'window' ? '' : 'data/popup/index.html'

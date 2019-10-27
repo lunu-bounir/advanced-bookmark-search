@@ -3,11 +3,12 @@
 <head>
   <link rel="stylesheet" href="index.css">
   <title>Advanced Bookmark Search</title>
+  <meta charset="utf-8">
 </head>
 <body>
   <header id="search">
     <form data-value="">
-      <input type="search" autofocus placeholder="search query" autocomplete="off" id="searchbox">
+      <input type="search" autofocus placeholder="search query" title="use Enter key to open all selected entries, Alt + Enter to add selected entry to the storage, meta + Enter to open selected entries in background tabs, and shift + Enter to open current selected entry in the active tab." autocomplete="off" id="searchbox">
       <input type="submit" value="">
     </form>
   </header>
@@ -39,7 +40,7 @@
       <tbody data-msg=""></tbody>
     </table>
   </section>
-  <footer>&nbsp;<span id="footer"></span></footer>
+  <footer>&nbsp;<span id="storage"></span><span id="footer"></span></footer>
 
   <script src="manager.js"></script>
   <script src="index.js"></script>

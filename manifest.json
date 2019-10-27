@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "version": "0.1.1",
+  "version": "0.1.3",
   "name": "Advanced Bookmark Search",
   "description": "A fast offline search engine for bookmarks that supports searching operators",
   "offline_enabled": true,
@@ -14,7 +14,7 @@
     "scripts": [
       "xapian.js",
       "background.js",
-      "xapian/xapian.js"
+      "xapian/xapian_noexception_nowasm.js"
     ]
   },
   "icons": {

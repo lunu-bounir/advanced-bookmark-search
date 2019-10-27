@@ -1,0 +1,11 @@
+Download Links (based on xapian-core-1.4.10)
+  https://github.com/lunu-bounir/xapain.js/releases/tag/0.2.4
+
+Source Code
+  https://github.com/lunu-bounir/xapain.js/blob/master/xapian.cc
+
+Build Instruction
+  https://github.com/lunu-bounir/xapain.js/blob/master/.travis.yml
+
+Build Log
+  https://travis-ci.org/lunu-bounir/xapain.js/builds/546768433
