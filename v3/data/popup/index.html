@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="index.css">
+  <title>Speedy Bookmarks Search</title>
+  <meta charset="utf-8">
+</head>
+<body>
+  <header id="search">
+    <form data-value="">
+      <input type="search" autofocus placeholder="search query" title="use Enter key to open all selected entries, Alt + Enter to add selected entry to the storage, meta + Enter to open selected entries in background tabs, and shift + Enter to open current selected entry in the active tab." autocomplete="off" id="searchbox">
+      <input type="submit" value="">
+    </form>
+  </header>
+  <section id="content">
+    <template id="entry">
+      <div class="entry">
+        <span>#</span>
+        <span data-id="title"></span>
+        <span data-id="url"></span>
+        <span data-id="path"></span>
+        <span data-id="date"></span>
+        <span data-id="percent"></span>
+      </div>
+    </template>
+    <div id="results-container">
+      <div class="entry">
+        <span>#</span>
+        <span data-id="title">Title</span>
+        <span data-id="url">URL</span>
+        <span data-id="path">Path</span>
+        <span data-id="date">Date</span>
+        <span data-id="percent">%</span>
+      </div>
+      <div id="results"></div>
+    </div>
+  </section>
+  <footer>&nbsp;<span id="storage"></span><span id="footer"></span></footer>
+
+  <script src="core/xapian.js"></script>
+  <script src="core/xapian/xapian_noexception_nowasm.js"></script>
+  <script src="core/bookmarks.js"></script>
+  <script src="manager.js"></script>
+  <script src="index.js"></script>
+</body>
+</html>
